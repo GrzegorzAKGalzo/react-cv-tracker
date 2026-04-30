@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CV Tracker
+
+A clean, fast job application tracker built with Next.js 16 and React 19. Sign in with Google, add applications, and track every stage of your job search — from first apply to offer.
+
+## Features
+
+- **Google OAuth** — one-click sign-in, no passwords
+- **Full CRUD** — add, edit, and delete job applications
+- **Status tracking** — Applied, Interviewing, Offered, Rejected
+- **Live stats dashboard** — counts per status at a glance
+- **Filter by status** with live counts in the dropdown
+- **Toast notifications** — instant feedback on every action
+- **Accessible** — WCAG 2.1 AA: label associations, dialog roles, keyboard navigation, Escape to close
+- **Fully responsive** — mobile-first layout, works on any screen size
+- **Skeleton loading** — no content flash on initial load
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| UI | React 19 + Tailwind CSS v4 |
+| Auth | NextAuth v4 (Google OAuth) |
+| Forms | React Hook Form + Zod |
+| Notifications | Sonner |
+| Language | TypeScript |
+
+## Architecture
+
+Data is stored in `localStorage` via a typed `ApplicationRepository` interface (`src/lib/repository.ts`). The repository pattern decouples the UI from the storage layer — swapping to Prisma/PostgreSQL requires only a new implementation of that interface, with zero changes to components.
+
+```
+src/
+├── app/
+│   ├── (auth)/login/       # Google sign-in page
+│   ├── api/auth/           # NextAuth route handler
+│   ├── dashboard/          # Protected dashboard
+│   └── layout.tsx          # Root layout + Toaster
+├── components/
+│   ├── ApplicationCard     # Card with hover-reveal actions
+│   ├── ApplicationModal    # Add/edit form modal
+│   ├── StatsCards          # Status count overview
+│   └── StatusBadge         # Color + symbol status pill
+├── lib/
+│   └── repository.ts       # localStorage CRUD (swappable)
+├── middleware.ts            # Route protection
+└── types/
+    └── application.ts      # Shared TypeScript types
+```
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone and install
+
+```bash
+git clone https://github.com/your-username/react-cv-tracker.git
+cd react-cv-tracker
+npm install
+```
+
+### 2. Set up Google OAuth
+
+Create a project in [Google Cloud Console](https://console.cloud.google.com/), enable the OAuth 2.0 API, and add `http://localhost:3000/api/auth/callback/google` as an authorised redirect URI.
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env.local
+```
+
+```env
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+NEXTAUTH_SECRET=your_random_secret
+NEXTAUTH_URL=http://localhost:3000
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Application Fields
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Field | Required | Notes |
+|---|---|---|
+| Position | Yes | Job title |
+| Company | Yes | Company name |
+| Status | Yes | Applied / Interviewing / Offered / Rejected |
+| Date Applied | Yes | Defaults to today |
+| Job URL | No | Link to the job posting |
+| Salary | No | e.g. $120k–$150k |
+| Notes | No | Max 500 characters |
 
-## Learn More
+## Roadmap
 
-To learn more about Next.js, take a look at the following resources:
+- [ ] PostgreSQL backend via Prisma
+- [ ] Sort by date / company / status
+- [ ] Dark mode
+- [ ] CSV export
+- [ ] Application timeline / activity log
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
