@@ -4,7 +4,6 @@ A clean, fast job application tracker built with Next.js 16 and React 19. Sign i
 
 ## Features
 
-- **Google OAuth** — one-click sign-in, no passwords
 - **Full CRUD** — add, edit, and delete job applications
 - **Status tracking** — Applied, Interviewing, Offered, Rejected
 - **Live stats dashboard** — counts per status at a glance
@@ -20,7 +19,6 @@ A clean, fast job application tracker built with Next.js 16 and React 19. Sign i
 |---|---|
 | Framework | Next.js 16 (App Router) |
 | UI | React 19 + Tailwind CSS v4 |
-| Auth | NextAuth v4 (Google OAuth) |
 | Forms | React Hook Form + Zod |
 | Notifications | Sonner |
 | Language | TypeScript |
@@ -58,24 +56,7 @@ cd react-cv-tracker
 npm install
 ```
 
-### 2. Set up Google OAuth
-
-Create a project in [Google Cloud Console](https://console.cloud.google.com/), enable the OAuth 2.0 API, and add `http://localhost:3000/api/auth/callback/google` as an authorised redirect URI.
-
-### 3. Configure environment variables
-
-```bash
-cp .env.example .env.local
-```
-
-```env
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-NEXTAUTH_SECRET=your_random_secret
-NEXTAUTH_URL=http://localhost:3000
-```
-
-### 4. Run the development server
+### 2. Run the development server
 
 ```bash
 npm run dev
@@ -95,13 +76,6 @@ Open [http://localhost:3000](http://localhost:3000).
 | Salary | No | e.g. $120k–$150k |
 | Notes | No | Max 500 characters |
 
-## Roadmap
-
-- [ ] PostgreSQL backend via Prisma
-- [ ] Sort by date / company / status
-- [ ] Dark mode
-- [ ] CSV export
-- [ ] Application timeline / activity log
 
 ## License
 
